@@ -27,9 +27,36 @@
 // 请不要使用内置的 LinkedList 库。
 // 调用 get、addAtHead、addAtTail、addAtIndex 和 deleteAtIndex 的次数不超过 2000 。
 
+// 定义节点类
+class ListNode {
+    constructor(val = null, next = null) {
+        this.val = val
+        this.next = next 
+    }
+}
 
 var MyLinkedList = function() {
-    
+    // 假设虚拟节点的 index 是 -1
+    this.dummyHead = new ListNode(0, null)
+    this.length = 0// 链表长度
+};
+
+/** 
+ * 因为后面的方法都有查找下标为 index 的操作,所以将此方法封装
+ * @param {number} index
+ * @return {number}
+ */
+MyLinkedList.prototype.getNode = function(index) {
+    if (index >= this.length || index < -1) {
+        return null
+    }
+    let curIndex = -1
+    let curNode = this.dummyHead
+    while (curIndex !== index) {
+        curIndex++
+        curNode = curNode.next
+    }
+    return curNode
 };
 
 /** 
@@ -37,7 +64,8 @@ var MyLinkedList = function() {
  * @return {number}
  */
 MyLinkedList.prototype.get = function(index) {
-    
+    const findNode = this.getNode(index)
+    return findNode ? findNode.val : -1
 };
 
 /** 
@@ -45,7 +73,9 @@ MyLinkedList.prototype.get = function(index) {
  * @return {void}
  */
 MyLinkedList.prototype.addAtHead = function(val) {
-    
+    const newHeadNode = new ListNode(val, this.dummyHead.next)
+    this.dummyHead.next = newHeadNode
+    this.length++
 };
 
 /** 
@@ -53,7 +83,10 @@ MyLinkedList.prototype.addAtHead = function(val) {
  * @return {void}
  */
 MyLinkedList.prototype.addAtTail = function(val) {
-    
+    const newTailNode = new ListNode(val, null)
+    const preNode = this.getNode(this.length - 1)
+    preNode.next = newTailNode
+    this.length++
 };
 
 /** 
@@ -62,7 +95,17 @@ MyLinkedList.prototype.addAtTail = function(val) {
  * @return {void}
  */
 MyLinkedList.prototype.addAtIndex = function(index, val) {
-    
+    if (index > this.length) {
+        return
+    }
+    if (index === this.length) {
+        this.addAtTail(val)
+        return
+    }
+    const preNode = this.getNode(index - 1)
+    const newNode = new ListNode(val, preNode.next ? preNode.next : null)
+    preNode.next = newNode
+    this.length++
 };
 
 /** 
@@ -70,7 +113,12 @@ MyLinkedList.prototype.addAtIndex = function(index, val) {
  * @return {void}
  */
 MyLinkedList.prototype.deleteAtIndex = function(index) {
-    
+    if (index < 0 || index >= this.length) {
+        return
+    }
+    const preNode = this.getNode(index - 1)
+    preNode.next = preNode.next.next
+    this.length--
 };
 
 /** 
