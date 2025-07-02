@@ -19,7 +19,6 @@
  * @return {Node} - 修改后的根节点
  */
 var connect = function(root) {
-    let res = [] // 未使用的变量，可以删除
     let queue = [] // 辅助队列用于层序遍历
     if (root) queue.push(root) // 根节点入队
     
