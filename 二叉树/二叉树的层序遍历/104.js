@@ -29,11 +29,21 @@ var maxDepth = function(root) { // 层次遍历
 };
 
 
-var maxDepth = function(root) { // DFS
-    if (!root) return 0
-    else {
-        let leftDepth = maxDepth(root.left)
-        let rightDepth = maxDepth(root.right)
-        return Math.max(leftDepth, rightDepth) + 1
-    }
+/**
+ * 计算二叉树的最大深度（DFS后序遍历实现）
+ * 最大深度定义：从根节点到最远叶子节点的最长路径上的节点数量
+ * @param {TreeNode} root - 二叉树的根节点
+ * @return {number} 二叉树的最大深度，空树返回0
+ */
+var maxDepth = function(root) { 
+    // 递归终止条件：如果当前节点为空，深度为0
+    if (!root) return 0;
+    
+    // 递归计算左子树的最大深度
+    let leftDepth = maxDepth(root.left);
+    // 递归计算右子树的最大深度
+    let rightDepth = maxDepth(root.right);
+    
+    // 当前节点的深度 = 左右子树最大深度中的较大值 + 1（当前节点本身）
+    return Math.max(leftDepth, rightDepth) + 1;
 };
